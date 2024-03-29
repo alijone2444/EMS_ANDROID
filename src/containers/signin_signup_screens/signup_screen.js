@@ -1,143 +1,126 @@
 
-import { View, ImageBackground, StyleSheet, Text, Dimensions, Image, Button, TouchableOpacity, TextInput } from 'react-native';
+import { View, ImageBackground, StyleSheet, Text, Dimensions, Platform, KeyboardAvoidingView, Image, Button, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Background from '../../components/Wrappers/Background';
 function SignUpScreen({ navigation }) {
+
     return (
-        <View style={{ height: "100%" }}>
+        <Background>
+            <View style={{ height: "100%" }}>
 
-            <ImageBackground
-                source={require('../../resources/background.jpg')}
-                style={styles.background}
-                resizeMode="stretch" >
-            </ImageBackground>
+                <Text style={styles.title_create_account}>Create Your {'\n'}Account</Text>
+                <KeyboardAvoidingView behavior={'height'} style={{ flex: 1 }}>
 
-            <View style={styles.overlay}></View>
+                    <View style={styles.formContainer}>
 
-            <Text style={styles.title_create_account}>Create Your {'\n'}Account</Text>
-
-            <View style={styles.formContainer}>
-
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Full Name"
-                        onChangeText={() => { console.log('hellowrld') }}
-                        placeholderTextColor="white"
-                    />
-                    <Icon name="user" size={20} color="white" style={{ position: 'absolute', right: 10, bottom: '50%' }} />
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email Address"
-                        onChangeText={() => { console.log('hellowrld') }}
-                        placeholderTextColor="white"
-                    />
-                    <Icon name="envelope" size={20} color="white" style={{ position: 'absolute', right: 10, bottom: '50%' }} />
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Password"
-                        onChangeText={() => { console.log('hellowrld') }}
-                        placeholderTextColor="white"
-                    />
-                    <Icon name="lock" size={20} color="white" style={{ position: 'absolute', right: 10, bottom: '50%' }} />
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Confirm Password"
-                        onChangeText={() => { console.log('hellowrld') }}
-                        placeholderTextColor="white"
-                    />
-                    <Icon name="lock" size={20} color="white" style={{ position: 'absolute', right: 10, bottom: '50%' }} />
-                </View>
-                <View style={{ width: '100%', alignItems: 'flex-start' }}>
-                    <TouchableOpacity
-                        style={{
-                            width: '40%',
-                            borderRadius: 20,         // Set your desired border radius
-                            paddingVertical: 10,      // Adjust padding as needed
-                            alignItems: 'center',     // Center the content horizontally
-                            marginTop: 10,            // Adjust margin as needed
-                            borderColor: 'white',
-                            borderWidth: 1
-                        }}
-                        onPress={() => { console.log('no functionality yet') }}
-                    >
-                        <Text style={{ color: 'white' }}>Submit</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '5%' }}>
-                    <TouchableOpacity onPress={() => {/* Handle social media login */ }}
-                    >
-                        <View >
-                            <Icon name="arrow-circle-right" size={50} color="white" />
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Full Name"
+                                onChangeText={() => { console.log('hellowrld') }}
+                                placeholderTextColor="white"
+                            />
+                            <Icon name="user" size={20} color="white" style={{ position: 'absolute', right: 10, bottom: '50%' }} />
                         </View>
-                    </TouchableOpacity>
-                </View>
 
-                <View style={{ padding: '5%' }}>
-                    <Text style={{
-                        color: 'white',
-                        fontSize: 18
-                    }}>
-                        Dont have an account?
-                    </Text>
-                    <TouchableOpacity
-                        style={{ width: "100%", paddingRight: '10%' }}
-                        activeOpacity={0.6}
-                        onPress={() => {
-                            // Handle Sign Up
-                        }}
-                    >
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Email Address"
+                                onChangeText={() => { console.log('hellowrld') }}
+                                placeholderTextColor="white"
+                            />
+                            <Icon name="envelope" size={20} color="white" style={{ position: 'absolute', right: 10, bottom: '50%' }} />
+                        </View>
+
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Password"
+                                onChangeText={() => { console.log('hellowrld') }}
+                                placeholderTextColor="white"
+                            />
+                            <Icon name="lock" size={20} color="white" style={{ position: 'absolute', right: 10, bottom: '50%' }} />
+                        </View>
+
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Confirm Password"
+                                onChangeText={() => { console.log('hellowrld') }}
+                                placeholderTextColor="white"
+                            />
+                            <Icon name="lock" size={20} color="white" style={{ position: 'absolute', right: 10, bottom: '50%' }} />
+                        </View>
+                        <View style={{ width: '100%', alignItems: 'flex-start' }}>
+                            <TouchableOpacity
+                                style={{
+                                    width: '40%',
+                                    borderRadius: 20,         // Set your desired border radius
+                                    paddingVertical: 10,      // Adjust padding as needed
+                                    alignItems: 'center',     // Center the content horizontally
+                                    marginTop: 10,            // Adjust margin as needed
+                                    borderColor: 'white',
+                                    borderWidth: 1
+                                }}
+                                onPress={() => {
+                                    navigation.navigate('AccountCreated')
+                                }}
+                            >
+                                <Text style={{ color: 'white' }}>Submit</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </KeyboardAvoidingView>
+
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '5%' }}>
+                        <TouchableOpacity onPress={() => {/* Handle social media login */ }}
+                        >
+                            <View >
+                                <Icon name="arrow-right" size={40} color="white" />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{ padding: '5%' }}>
                         <Text style={{
-                            textDecorationLine: 'underline',
-                            fontSize: 25,
                             color: 'white',
-                            fontWeight: 'bold',
-                            textAlign: 'right'
-                        }}>Sign In!</Text>
-                    </TouchableOpacity>
-                </View>
+                            fontSize: 18
+                        }}>
+                            Dont have an account?
+                        </Text>
+                        <TouchableOpacity
+                            style={{ width: "100%", paddingRight: '10%' }}
+                            activeOpacity={0.6}
+                            onPress={() => {
 
+                                navigation.navigate('SignInScreen', { name: 'Jane' })
+                            }}
+                        >
+                            <Text style={{
+                                textDecorationLine: 'underline',
+                                fontSize: 25,
+                                color: 'white',
+                                fontWeight: 'bold',
+                                textAlign: 'right'
+                            }}>Sign In!</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
             </View>
-        </View>
+        </Background>
     )
 }
 
 const styles = StyleSheet.create({
-    background: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: -1
-    },
-    overlay: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    },
+
     title_create_account: {
-        fontFamily: 'Roboto-Bold',
         fontSize: 30,
+        fontWeight: 'bold',
         color: 'white',
         padding: '5%',
-        letterSpacing: 3
     },
     formContainer: {
         justifyContent: 'center',
