@@ -3,7 +3,9 @@ import { View, ImageBackground, StyleSheet, Text, Image, Button, TouchableOpacit
 // import Svg, { Path } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Background from '../../components/Wrappers/Background';
+import { useEffect, useState } from 'react';
 function SigninSignoutOption({ navigation }) {
+
     return (
         <Background>
             <View style={{

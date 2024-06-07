@@ -5,12 +5,11 @@ import { View, StyleSheet } from 'react-native';
 import Header from '../Header/header.js';
 import SearchBarComponent from '../searchBar/searchbar.js';
 import BottomHeader from '../Header/headerBottom.js';
-const HeaderWrapper = ({ title, children, addPadding, navigation }) => {
+const HeaderWrapper = ({ children, addPadding, navigation, showHeader, showBottomHeader }) => {
     return (
         <View style={styles.container}>
-            <Header title={title} navigation={navigation} />
+            {showHeader && <Header navigation={navigation} />}
             <View style={[styles.content, { padding: addPadding ? 20 : 0 }]}>{children}</View>
-            <BottomHeader />
         </View>
     );
 };

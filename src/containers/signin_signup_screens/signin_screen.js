@@ -1,10 +1,70 @@
-import { View, StyleSheet, Text, Dimensions, Image, Button, TouchableOpacity, TextInput } from 'react-native'
+import { View, StyleSheet, Text, Dimensions, ActivityIndicator, Image, Button, TouchableOpacity, TextInput } from 'react-native'
 import Svg, { Path } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Background from '../../components/Wrappers/Background';
+import axios from 'axios'
+import { useEffect, useState } from 'react';
+import GlobalCostant from '../../constants/GlobalConstants';
+import { getToken, storeToken } from '../../components/localStorage/localStorageToken';
+import NiceAlert from '../../components/alertComponent/alert';
+import { useDispatch } from 'react-redux';
+import { setAuthenticated } from '../../ReduxStore/actions/isAuthenticated';
 function SignInScreen({ navigation }) {
+
+  const [userName, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [errorMessage, seterrorMessage] = useState('')
+  const [errorTitle, seterrorTitle] = useState('')
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
+  const handleSubmit = async () => {
+    if (!userName || !password) {
+      setAlertVisible(true);
+      seterrorTitle('Missing Fields')
+      seterrorMessage('please fill up the given fields to login sucessfully')
+      return;
+    }
+    else {
+      setLoading(true)
+      await axios.post(`${GlobalCostant.baseUrl}login`, { Rollno: userName, password: password })
+        .then(response => {
+          setLoading(false)
+          storeToken('authToken', response.data.token);
+          storeToken('userType', response.data.userType);
+          dispatch(setAuthenticated(true));
+
+          if (response.data.token && response.data.success) {
+            if (response.data.tour > 1) {
+              navigation.navigate('Main');
+            }
+            else {
+              navigation.navigate('tour')
+            }
+          }
+        })
+
+        .catch(error => {
+          console.log('eoor:', error);
+          setAlertVisible(true);
+          setLoading(false)
+          seterrorTitle('login Failed')
+          seterrorMessage('Either account not found or credentials entered are wrong')
+        })
+
+    }
+
+  }
+
   return (
     <Background>
+      <NiceAlert
+        visible={isAlertVisible}
+        title={errorTitle}
+        description={errorMessage}
+        onClose={() => setAlertVisible(false)}
+      />
+
       <View style={{ height: "100%", width: '100%', display: 'flex', justifyContent: "center" }}>
 
         <Text style={styles.hello}>Hello,{'\n'}Sign In!</Text>
@@ -47,7 +107,7 @@ function SignInScreen({ navigation }) {
             </Svg>
             <View style={{ backgroundColor: "rgba(255, 255, 255, 0.3)", height: '50%', position: 'relative' }}></View>
             <Svg
-              height={250}
+              height={200}
               width="100%"
               viewBox="0 0 1440 220">
               <Path
@@ -64,8 +124,10 @@ function SignInScreen({ navigation }) {
             <TextInput
               style={styles.inputStyle}
               autoCorrect={false}
-              placeholder="Username"
+              placeholder="Roll number"
               placeholderTextColor="white"
+              value={userName}
+              onChangeText={(text) => { setUsername(text) }}
             />
             <Icon name="user" size={20} color="white" />
           </View>
@@ -76,6 +138,8 @@ function SignInScreen({ navigation }) {
               secureTextEntry
               placeholder="Password"
               placeholderTextColor="white"
+              value={password}
+              onChangeText={(text) => { setPassword(text) }}
             />
             <Icon name="key" size={20} color="white" />
           </View>
@@ -83,17 +147,19 @@ function SignInScreen({ navigation }) {
             flexDirection: "row", justifyContent: 'space-between', width: "70%", height: "20%",
             marginVertical: "5%",
           }}>
-            <TouchableOpacity
-              activeOpacity={0.6}
-              style={styles.btn}
-              onPress={() => {
-                navigation.navigate('home')
-              }}
-            >
-              <View>
-                <Text style={{ color: 'white', textAlign: 'center' }}>Sign In</Text>
-              </View>
-            </TouchableOpacity>
+            {loading ?
+              <ActivityIndicator size="large" color="white" /> :
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={styles.btn}
+                onPress={
+                  handleSubmit
+                }
+              >
+                <View>
+                  <Text style={{ color: 'white', textAlign: 'center' }}>Sign In</Text>
+                </View>
+              </TouchableOpacity>}
 
             {/* Forgot password link */}
             <View style={styles.forgotPasswordContainer}>
@@ -153,6 +219,7 @@ const styles = StyleSheet.create({
     position: 'absolute'
     , top: 0,
     fontSize: 35,
+    fontWeight: 'bold',
     color: 'white',
     padding: '10%',
     paddingLeft: "5%"
